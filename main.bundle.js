@@ -153,7 +153,7 @@ var AccountService = (function () {
     }
     AccountService.prototype.login = function (username, password) {
         var _this = this;
-        var url = 'http://filbrokerwebsite-priland.azurewebsites.net/token';
+        var url = 'https://filbrokerwebsite-priland.azurewebsites.net/token';
         var body = "username=" + username + "&password=" + password + "&grant_type=password";
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/x-www-form-urlencoded' });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
@@ -1069,7 +1069,7 @@ var BrokerService = (function () {
     // list
     BrokerService.prototype.getBrokers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/List";
         var brokers = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -1124,7 +1124,7 @@ var BrokerService = (function () {
     BrokerService.prototype.getBroker = function (id) {
         var _this = this;
         var broker;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Detail/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Detail/" + id;
         this.http.get(url, this.options).subscribe(function (response) {
             var results = response.json();
             if (results != null) {
@@ -1178,7 +1178,7 @@ var BrokerService = (function () {
     BrokerService.prototype.getDropDowns = function () {
         var _this = this;
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
             if (results.length > 0) {
@@ -1201,7 +1201,7 @@ var BrokerService = (function () {
     // list operations 
     BrokerService.prototype.addBroker = function (broker) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Add";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Add";
         this.http.post(url, JSON.stringify(broker), this.options).subscribe(function (response) {
             var id = response.json();
             console.log(id);
@@ -1220,7 +1220,7 @@ var BrokerService = (function () {
     };
     BrokerService.prototype.deleteBroker = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.brokerDeletedSource.next(1);
         }, function (error) {
@@ -1229,7 +1229,7 @@ var BrokerService = (function () {
     };
     BrokerService.prototype.uploadBrokerPicture = function (file, fileName) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/Blob/Upload";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/Blob/Upload";
         var blob;
         var formData = new FormData();
         formData.append("image", file, fileName);
@@ -1259,7 +1259,7 @@ var BrokerService = (function () {
     // detail operations
     BrokerService.prototype.saveBroker = function (broker) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Save";
         this.http.put(url, JSON.stringify(broker), this.options).subscribe(function (response) {
             _this.brokerSavedSource.next(1);
         }, function (error) {
@@ -1268,7 +1268,7 @@ var BrokerService = (function () {
     };
     BrokerService.prototype.lockBroker = function (broker) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Lock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Lock";
         this.http.put(url, JSON.stringify(broker), this.options).subscribe(function (response) {
             _this.brokerLockedSource.next(1);
         }, function (error) {
@@ -1277,7 +1277,7 @@ var BrokerService = (function () {
     };
     BrokerService.prototype.unlockBroker = function (broker) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Unlock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/Unlock";
         this.http.put(url, JSON.stringify(broker), this.options).subscribe(function (response) {
             _this.brokerUnlockedSource.next(1);
         }, function (error) {
@@ -1953,7 +1953,7 @@ var ChecklistService = (function () {
     // filters
     ChecklistService.prototype.getProjects = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/List";
         var projects = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -1982,7 +1982,7 @@ var ChecklistService = (function () {
     // list
     ChecklistService.prototype.getChecklistPerProjectId = function (projectId) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstChecklist/ListPerProjectId/" + projectId;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstChecklist/ListPerProjectId/" + projectId;
         var checklist = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -2014,7 +2014,7 @@ var ChecklistService = (function () {
     // list operations
     ChecklistService.prototype.addChecklist = function (checklist, btnAddChecklist) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Add";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Add";
         this.http.post(url, JSON.stringify(checklist), this.options).subscribe(function (response) {
             var id = response.json();
             if (id > 0) {
@@ -2036,7 +2036,7 @@ var ChecklistService = (function () {
     };
     ChecklistService.prototype.deleteChecklist = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.checklistDeletedSource.next(1);
         }, function (error) {
@@ -2046,7 +2046,7 @@ var ChecklistService = (function () {
     ChecklistService.prototype.getChecklist = function (id) {
         var _this = this;
         var checklist;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Detail/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Detail/" + id;
         this.http.get(url, this.options).subscribe(function (response) {
             var result = response.json();
             if (result != null) {
@@ -2078,7 +2078,7 @@ var ChecklistService = (function () {
     // detail operations
     ChecklistService.prototype.saveChecklist = function (checklist) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Save";
         this.http.put(url, JSON.stringify(checklist), this.options).subscribe(function (response) {
             _this.checklistSavedSource.next(1);
         }, function (error) {
@@ -2087,7 +2087,7 @@ var ChecklistService = (function () {
     };
     ChecklistService.prototype.lockChecklist = function (checklist) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Lock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/Lock";
         this.http.put(url, JSON.stringify(checklist), this.options).subscribe(function (response) {
             _this.checklistLockedSource.next(1);
         }, function (error) {
@@ -2096,7 +2096,7 @@ var ChecklistService = (function () {
     };
     ChecklistService.prototype.unlockChecklist = function (checklist) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/UnLock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckList/UnLock";
         this.http.put(url, JSON.stringify(checklist), this.options).subscribe(function (reponse) {
             _this.checklistUnlockedSource.next(1);
         }, function (error) {
@@ -2107,7 +2107,7 @@ var ChecklistService = (function () {
     ChecklistService.prototype.getDropDowns = function () {
         var _this = this;
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
             if (results.length > 0) {
@@ -2130,7 +2130,7 @@ var ChecklistService = (function () {
     // detail item1 (requirements) list
     ChecklistService.prototype.getChecklistRequirementsPerChecklist = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckListRequirement/ListPerChecklist/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckListRequirement/ListPerChecklist/" + id;
         var checklistRequirements = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -2159,7 +2159,7 @@ var ChecklistService = (function () {
     ChecklistService.prototype.saveChecklistRequirement = function (checklistRequirement) {
         var _this = this;
         if (checklistRequirement.id == 0) {
-            var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckListRequirement/Add";
+            var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckListRequirement/Add";
             this.http.post(url, JSON.stringify(checklistRequirement), this.options).subscribe(function (response) {
                 _this.checklistRequirementsSavedSource.next(1);
             }, function (error) {
@@ -2167,7 +2167,7 @@ var ChecklistService = (function () {
             });
         }
         else {
-            var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckListRequirement/Save";
+            var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckListRequirement/Save";
             this.http.put(url, JSON.stringify(checklistRequirement), this.options).subscribe(function (response) {
                 _this.checklistRequirementsSavedSource.next(1);
             }, function (error) {
@@ -2177,7 +2177,7 @@ var ChecklistService = (function () {
     };
     ChecklistService.prototype.deleteChecklistRequirement = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckListRequirement/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCheckListRequirement/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.checklistRequirementsDeletedSource.next(1);
         }, function (error) {
@@ -2746,7 +2746,7 @@ var CommissionService = (function () {
     // list and detail
     CommissionService.prototype.getCommissionsPerDates = function (dateStart, dateEnd) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/ListPerDates/" + dateStart + "/" + dateEnd;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/ListPerDates/" + dateStart + "/" + dateEnd;
         var commissionRequest = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -2788,7 +2788,7 @@ var CommissionService = (function () {
     CommissionService.prototype.getCommission = function (id) {
         var _this = this;
         var commission;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Detail/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Detail/" + id;
         this.http.get(url, this.options).subscribe(function (response) {
             var result = response.json();
             if (result != null) {
@@ -2829,7 +2829,7 @@ var CommissionService = (function () {
     // combo boxes
     CommissionService.prototype.getSoldUnits = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/List";
         var soldUnits = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -2878,7 +2878,7 @@ var CommissionService = (function () {
     };
     CommissionService.prototype.getBrokers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/List";
         var brokers = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -2898,7 +2898,7 @@ var CommissionService = (function () {
     };
     CommissionService.prototype.getUsers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
         var users = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -2919,7 +2919,7 @@ var CommissionService = (function () {
     CommissionService.prototype.getDropDowns = function () {
         var _this = this;
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
             if (results.length > 0) {
@@ -2942,7 +2942,7 @@ var CommissionService = (function () {
     // list operations
     CommissionService.prototype.addCommission = function (commission, btnAddCommission) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Add";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Add";
         this.http.post(url, JSON.stringify(commission), this.options).subscribe(function (response) {
             var id = response.json();
             if (id > 0) {
@@ -2964,7 +2964,7 @@ var CommissionService = (function () {
     };
     CommissionService.prototype.deleteCommission = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.commissionDeletedSource.next(1);
         }, function (error) {
@@ -2974,7 +2974,7 @@ var CommissionService = (function () {
     // detail operations
     CommissionService.prototype.saveCommission = function (commission) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Save";
         this.http.put(url, JSON.stringify(commission), this.options).subscribe(function (response) {
             _this.commissionSavedSource.next(1);
         }, function (error) {
@@ -2983,7 +2983,7 @@ var CommissionService = (function () {
     };
     CommissionService.prototype.lockCommission = function (commission) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Lock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Lock";
         this.http.put(url, JSON.stringify(commission), this.options).subscribe(function (response) {
             _this.commissionLockedSource.next(1);
         }, function (error) {
@@ -2992,7 +2992,7 @@ var CommissionService = (function () {
     };
     CommissionService.prototype.unlockCommission = function (commission) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Unlock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnCommissionRequest/Unlock";
         this.http.put(url, JSON.stringify(commission), this.options).subscribe(function (response) {
             _this.commissionUnlockedSource.next(1);
         }, function (error) {
@@ -3633,7 +3633,7 @@ var CustomerService = (function () {
     // customer list
     CustomerService.prototype.getCustomers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/List";
         var customers = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -3693,7 +3693,7 @@ var CustomerService = (function () {
     // customer list operations
     CustomerService.prototype.addCustomer = function (customer, btnAddCustomer) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Add";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Add";
         this.http.post(url, JSON.stringify(customer), this.options).subscribe(function (response) {
             var id = response.json();
             if (id > 0) {
@@ -3715,7 +3715,7 @@ var CustomerService = (function () {
     };
     CustomerService.prototype.deleteCustomer = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.customerDeletedSource.next(1);
         }, function (error) {
@@ -3726,7 +3726,7 @@ var CustomerService = (function () {
     CustomerService.prototype.getCustomer = function (id) {
         var _this = this;
         var customer;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Detail/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Detail/" + id;
         this.http.get(url, this.options).subscribe(function (response) {
             var result = response.json();
             if (result != null) {
@@ -3785,7 +3785,7 @@ var CustomerService = (function () {
     // customer detail operations
     CustomerService.prototype.saveCustomer = function (project) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Save";
         this.http.put(url, JSON.stringify(project), this.options).subscribe(function (response) {
             _this.customerSavedSource.next(1);
         }, function (error) {
@@ -3794,7 +3794,7 @@ var CustomerService = (function () {
     };
     CustomerService.prototype.lockCustomer = function (project) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Lock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Lock";
         this.http.put(url, JSON.stringify(project), this.options).subscribe(function (response) {
             _this.customerLockedSource.next(1);
         }, function (error) {
@@ -3803,7 +3803,7 @@ var CustomerService = (function () {
     };
     CustomerService.prototype.unlockCustomer = function (project) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Unlock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/Unlock";
         this.http.put(url, JSON.stringify(project), this.options).subscribe(function (response) {
             _this.customerUnlockedSource.next(1);
         }, function (error) {
@@ -3812,7 +3812,7 @@ var CustomerService = (function () {
     };
     CustomerService.prototype.uploadCustomerPicture = function (file, fileName) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/Blob/Upload";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/Blob/Upload";
         var blob;
         var formData = new FormData();
         formData.append("image", file, fileName);
@@ -3843,7 +3843,7 @@ var CustomerService = (function () {
     CustomerService.prototype.getDropDowns = function () {
         var _this = this;
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
             if (results.length > 0) {
@@ -4048,7 +4048,7 @@ var FooterService = (function () {
     }
     FooterService.prototype.getUsers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
         var users = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["ObservableArray"](response.json());
@@ -4533,7 +4533,7 @@ var PDFService = (function () {
     // ==============
     PDFService.prototype.getPDFCustomer = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/PDF/Customer/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/PDF/Customer/" + id;
         console.log(url);
         this.http.get(url, { responseType: __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* ResponseContentType */].Blob }).subscribe(function (response) {
             var pdf = new Blob([response.blob()], { type: 'application/pdf' });
@@ -4542,7 +4542,7 @@ var PDFService = (function () {
     };
     PDFService.prototype.getPDFBroker = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/PDF/Broker/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/PDF/Broker/" + id;
         console.log(url);
         this.http.get(url, { responseType: __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* ResponseContentType */].Blob }).subscribe(function (response) {
             var pdf = new Blob([response.blob()], { type: 'application/pdf' });
@@ -4551,7 +4551,7 @@ var PDFService = (function () {
     };
     PDFService.prototype.getPDFChecklist = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/PDF/Checklist/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/PDF/Checklist/" + id;
         console.log(url);
         this.http.get(url, { responseType: __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* ResponseContentType */].Blob }).subscribe(function (response) {
             var pdf = new Blob([response.blob()], { type: 'application/pdf' });
@@ -4560,7 +4560,7 @@ var PDFService = (function () {
     };
     PDFService.prototype.getPDFSoldUnitProposal = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/PDF/SoldUnitProposal/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/PDF/SoldUnitProposal/" + id;
         console.log(url);
         this.http.get(url, { responseType: __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* ResponseContentType */].Blob }).subscribe(function (response) {
             var pdf = new Blob([response.blob()], { type: 'application/pdf' });
@@ -4569,7 +4569,7 @@ var PDFService = (function () {
     };
     PDFService.prototype.getPDFSoldUnitContract = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/PDF/SoldUnitContract/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/PDF/SoldUnitContract/" + id;
         console.log(url);
         this.http.get(url, { responseType: __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* ResponseContentType */].Blob }).subscribe(function (response) {
             var pdf = new Blob([response.blob()], { type: 'application/pdf' });
@@ -5180,7 +5180,7 @@ var ProjectService = (function () {
     // project listing
     ProjectService.prototype.getProjects = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/List";
         var projects = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -5209,7 +5209,7 @@ var ProjectService = (function () {
     // project listing operations
     ProjectService.prototype.addProject = function (project, btnAddProject) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Add";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Add";
         this.http.post(url, JSON.stringify(project), this.options).subscribe(function (response) {
             var id = response.json();
             if (id > 0) {
@@ -5231,7 +5231,7 @@ var ProjectService = (function () {
     };
     ProjectService.prototype.deleteProject = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.projectDeletedSource.next(1);
         }, function (error) {
@@ -5242,7 +5242,7 @@ var ProjectService = (function () {
     ProjectService.prototype.getProject = function (id) {
         var _this = this;
         var project;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Detail/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Detail/" + id;
         this.http.get(url, this.options).subscribe(function (response) {
             var result = response.json();
             if (result != null) {
@@ -5271,7 +5271,7 @@ var ProjectService = (function () {
     // project detail operations
     ProjectService.prototype.saveProject = function (project) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Save";
         this.http.put(url, JSON.stringify(project), this.options).subscribe(function (response) {
             _this.projectSavedSource.next(1);
         }, function (error) {
@@ -5280,7 +5280,7 @@ var ProjectService = (function () {
     };
     ProjectService.prototype.lockProject = function (project) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Lock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Lock";
         this.http.put(url, JSON.stringify(project), this.options).subscribe(function (response) {
             _this.projectLockedSource.next(1);
         }, function (error) {
@@ -5289,7 +5289,7 @@ var ProjectService = (function () {
     };
     ProjectService.prototype.unlockProject = function (project) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Unlock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/Unlock";
         this.http.put(url, JSON.stringify(project), this.options).subscribe(function (response) {
             _this.projectUnlockedSource.next(1);
         }, function (error) {
@@ -5300,7 +5300,7 @@ var ProjectService = (function () {
     ProjectService.prototype.getDropDowns = function () {
         var _this = this;
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
             if (results.length > 0) {
@@ -5322,7 +5322,7 @@ var ProjectService = (function () {
     // get house models per project
     ProjectService.prototype.getHouseModelsPerProject = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/ListPerProjectId/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/ListPerProjectId/" + id;
         var houseModels = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -5355,7 +5355,7 @@ var ProjectService = (function () {
     ProjectService.prototype.saveHouseModel = function (houseModel) {
         var _this = this;
         if (houseModel.id == 0) {
-            var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/Add";
+            var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/Add";
             this.http.post(url, JSON.stringify(houseModel), this.options).subscribe(function (response) {
                 _this.houseModelSavedSource.next(1);
             }, function (error) {
@@ -5363,7 +5363,7 @@ var ProjectService = (function () {
             });
         }
         else {
-            var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/Save";
+            var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/Save";
             this.http.put(url, JSON.stringify(houseModel), this.options).subscribe(function (response) {
                 _this.houseModelSavedSource.next(1);
             }, function (error) {
@@ -5373,7 +5373,7 @@ var ProjectService = (function () {
     };
     ProjectService.prototype.deleteHouseModel = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.houseModelDeletedSource.next(1);
         }, function (error) {
@@ -5608,7 +5608,7 @@ var ReportsService = (function () {
     }
     ReportsService.prototype.getSoldUnitSummary = function (dateStart, dateEnd) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/RepSummary/ListSoldUnitPerDates/" + dateStart + "/" + dateEnd;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/RepSummary/ListSoldUnitPerDates/" + dateStart + "/" + dateEnd;
         var soldUnits = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -5657,7 +5657,7 @@ var ReportsService = (function () {
     };
     ReportsService.prototype.getCommissionRequestSummary = function (dateStart, dateEnd) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/RepSummary/ListCommissionRequestPerDates/" + dateStart + "/" + dateEnd;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/RepSummary/ListCommissionRequestPerDates/" + dateStart + "/" + dateEnd;
         var commissionRequests = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -5698,7 +5698,7 @@ var ReportsService = (function () {
     };
     ReportsService.prototype.getSoldUnitRequirementActivitySummary = function (dateStart, dateEnd) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/RepSummary/ListSoldUnitRequirementActivityPerDates/" + dateStart + "/" + dateEnd;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/RepSummary/ListSoldUnitRequirementActivityPerDates/" + dateStart + "/" + dateEnd;
         var soldUnitRequirementActivities = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -6098,7 +6098,7 @@ var SettingsService = (function () {
     SettingsService.prototype.getSettings = function () {
         var _this = this;
         var settings;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysSettings/Detail";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysSettings/Detail";
         this.http.get(url, this.options).subscribe(function (response) {
             var result = response.json();
             if (result != null) {
@@ -6131,7 +6131,7 @@ var SettingsService = (function () {
     // detail operations
     SettingsService.prototype.saveSettings = function (settings) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysSettings/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysSettings/Save";
         this.http.put(url, JSON.stringify(settings), this.options).subscribe(function (response) {
             _this.settingsSavedSource.next(1);
         }, function (error) {
@@ -6141,7 +6141,7 @@ var SettingsService = (function () {
     // detail combo boxes
     SettingsService.prototype.getUsers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
         var users = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -6166,7 +6166,7 @@ var SettingsService = (function () {
     // detail line1 (drop downs) list
     SettingsService.prototype.getDropDowns = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -6189,7 +6189,7 @@ var SettingsService = (function () {
     // detail line1 (drop downs) list operations
     SettingsService.prototype.deleteDropDowns = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.dropDownsDeletedSource.next(1);
         }, function (error) {
@@ -6199,7 +6199,7 @@ var SettingsService = (function () {
     SettingsService.prototype.saveDropDowns = function (dropDown) {
         var _this = this;
         if (dropDown.id == 0) {
-            var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/Add";
+            var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/Add";
             this.http.post(url, JSON.stringify(dropDown), this.options).subscribe(function (response) {
                 _this.dropDownsSavedSource.next(1);
             }, function (error) {
@@ -6207,7 +6207,7 @@ var SettingsService = (function () {
             });
         }
         else {
-            var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/Save";
+            var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/Save";
             this.http.put(url, JSON.stringify(dropDown), this.options).subscribe(function (response) {
                 _this.dropDownsSavedSource.next(1);
             }, function (error) {
@@ -7151,7 +7151,7 @@ var SoldUnitService = (function () {
     // list
     SoldUnitService.prototype.getSoldUnitsPerDates = function (dateStart, dateEnd) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/ListPerDates/" + dateStart + "/" + dateEnd;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/ListPerDates/" + dateStart + "/" + dateEnd;
         var soldUnits = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7202,7 +7202,7 @@ var SoldUnitService = (function () {
     SoldUnitService.prototype.getSoldUnit = function (id) {
         var _this = this;
         var soldUnit;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Detail/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Detail/" + id;
         this.http.get(url, this.options).subscribe(function (response) {
             var result = response.json();
             if (result != null) {
@@ -7251,7 +7251,7 @@ var SoldUnitService = (function () {
     // detail line1 (checklist requirements) - new list and existing list
     SoldUnitService.prototype.getNewSoldUnitRequirements = function (soldUnitId, checklistId) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirement/ListNewTrnSoldUnitRequirements/" + soldUnitId + "/" + checklistId;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirement/ListNewTrnSoldUnitRequirements/" + soldUnitId + "/" + checklistId;
         var soldUnitRequirements = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7286,7 +7286,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.getSoldUnitRequirements = function (soldUnitId) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirement/ListPerUnitSold/" + soldUnitId;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirement/ListPerUnitSold/" + soldUnitId;
         var soldUnitRequirements = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7322,7 +7322,7 @@ var SoldUnitService = (function () {
     // detail line1 line1 (checklist requirement activities)
     SoldUnitService.prototype.getSoldUnitRequirementActivities = function (soldUnitRequirementId) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirementActivity/ListPerSoldUnitRequirement/" + soldUnitRequirementId;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirementActivity/ListPerSoldUnitRequirement/" + soldUnitRequirementId;
         var soldUnitRequirementActivities = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7349,7 +7349,7 @@ var SoldUnitService = (function () {
     // detail combo boxes
     SoldUnitService.prototype.getProjects = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/List";
         var projects = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7378,7 +7378,7 @@ var SoldUnitService = (function () {
     SoldUnitService.prototype.getDropDowns = function () {
         var _this = this;
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
             if (results.length > 0) {
@@ -7400,7 +7400,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.getUnitsPerProject = function (projectId) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/ListPerProjectId/" + projectId;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/ListPerProjectId/" + projectId;
         var units = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7436,7 +7436,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.getChecklistsPerProject = function (projectId) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstChecklist/ListPerProjectId/" + projectId;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstChecklist/ListPerProjectId/" + projectId;
         var checklists = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7467,7 +7467,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.getCustomers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstCustomer/List";
         var customers = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7487,7 +7487,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.getBrokers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstBroker/List";
         var brokers = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7507,7 +7507,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.getUsers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
         var users = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -7528,7 +7528,7 @@ var SoldUnitService = (function () {
     // list operations
     SoldUnitService.prototype.addSoldUnit = function (soldUnit, btnAddSoldUnit) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Add";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Add";
         this.http.post(url, JSON.stringify(soldUnit), this.options).subscribe(function (response) {
             var id = response.json();
             if (id > 0) {
@@ -7550,7 +7550,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.deleteSoldUnit = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.soldUnitDeletedSource.next(1);
         }, function (error) {
@@ -7560,7 +7560,7 @@ var SoldUnitService = (function () {
     // detail operations
     SoldUnitService.prototype.saveSoldUnit = function (soldUnit) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Save";
         this.http.put(url, JSON.stringify(soldUnit), this.options).subscribe(function (response) {
             _this.soldUnitSavedSource.next(1);
         }, function (error) {
@@ -7569,7 +7569,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.lockSoldUnit = function (soldUnit) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Lock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Lock";
         this.http.put(url, JSON.stringify(soldUnit), this.options).subscribe(function (response) {
             _this.soldUnitLockedSource.next(1);
         }, function (error) {
@@ -7578,7 +7578,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.unlockSoldUnit = function (soldUnit) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Unlock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnit/Unlock";
         this.http.put(url, JSON.stringify(soldUnit), this.options).subscribe(function (response) {
             _this.soldUnitUnlockedSource.next(1);
         }, function (error) {
@@ -7588,7 +7588,7 @@ var SoldUnitService = (function () {
     // detail line1 (checklist requirements) operations
     SoldUnitService.prototype.saveSoldUnitRequirement = function (soldUnitRequirement) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirement/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirement/Save";
         this.http.put(url, JSON.stringify(soldUnitRequirement), this.options).subscribe(function (response) {
             _this.soldUnitRequirementSavedSource.next(1);
         }, function (error) {
@@ -7598,7 +7598,7 @@ var SoldUnitService = (function () {
     // detail line1 line (checklist requirement activities) operations
     SoldUnitService.prototype.saveSoldUnitRequirementActivity = function (soldUnitRequirementActivity) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirementActivity/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirementActivity/Save";
         this.http.put(url, JSON.stringify(soldUnitRequirementActivity), this.options).subscribe(function (response) {
             _this.soldUnitRequirementAcvititySavedSource.next(1);
         }, function (error) {
@@ -7607,7 +7607,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.addSoldUnitRequirementActivity = function (soldUnitRequirementActivity) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirementActivity/Add";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirementActivity/Add";
         this.http.post(url, JSON.stringify(soldUnitRequirementActivity), this.options).subscribe(function (response) {
             _this.soldUnitRequirementAcvitityAddSource.next(1);
         }, function (error) {
@@ -7616,7 +7616,7 @@ var SoldUnitService = (function () {
     };
     SoldUnitService.prototype.deleteSoldUnitRequirementActivity = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirementActivity/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/TrnSoldUnitRequirementActivity/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.soldUnitRequirementAcvitityDeleteSource.next(1);
         }, function (error) {
@@ -8167,7 +8167,7 @@ var UnitService = (function () {
     // list
     UnitService.prototype.getProjects = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstProject/List";
         var projects = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -8196,7 +8196,7 @@ var UnitService = (function () {
     // list operations
     UnitService.prototype.addUnit = function (unit, btnAddUnit) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Add";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Add";
         this.http.post(url, JSON.stringify(unit), this.options).subscribe(function (response) {
             var id = response.json();
             if (id > 0) {
@@ -8218,7 +8218,7 @@ var UnitService = (function () {
     };
     UnitService.prototype.deleteUnit = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.unitDeletedSource.next(1);
         }, function (error) {
@@ -8229,7 +8229,7 @@ var UnitService = (function () {
     UnitService.prototype.getUnit = function (id) {
         var _this = this;
         var unit;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Detail/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Detail/" + id;
         this.http.get(url, this.options).subscribe(function (response) {
             var result = response.json();
             if (result != null) {
@@ -8265,7 +8265,7 @@ var UnitService = (function () {
     // detail operations
     UnitService.prototype.saveUnit = function (unit) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Save";
         this.http.put(url, JSON.stringify(unit), this.options).subscribe(function (response) {
             _this.unitSavedSource.next(1);
         }, function (error) {
@@ -8274,7 +8274,7 @@ var UnitService = (function () {
     };
     UnitService.prototype.lockUnit = function (unit) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Lock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Lock";
         this.http.put(url, JSON.stringify(unit), this.options).subscribe(function (response) {
             _this.unitLockedSource.next(1);
         }, function (error) {
@@ -8283,7 +8283,7 @@ var UnitService = (function () {
     };
     UnitService.prototype.unlockUnit = function (unit) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Unlock";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/Unlock";
         this.http.put(url, JSON.stringify(unit), this.options).subscribe(function (response) {
             _this.unitUnlockedSource.next(1);
         }, function (error) {
@@ -8293,7 +8293,7 @@ var UnitService = (function () {
     // combo boxes
     UnitService.prototype.getUnitsPerProjectId = function (projectId) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/ListPerProjectId/" + projectId;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/ListPerProjectId/" + projectId;
         var units = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -8330,7 +8330,7 @@ var UnitService = (function () {
     UnitService.prototype.getHouseModelsPerProject = function (id) {
         var _this = this;
         var houseModels = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/ListPerProjectId/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/ListPerProjectId/" + id;
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
             if (results.length > 0) {
@@ -8361,7 +8361,7 @@ var UnitService = (function () {
     UnitService.prototype.getDropDowns = function () {
         var _this = this;
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
             if (results.length > 0) {
@@ -8922,7 +8922,7 @@ var UserService = (function () {
     // list
     UserService.prototype.getUsers = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/List";
         var users = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -8948,7 +8948,7 @@ var UserService = (function () {
     UserService.prototype.getUser = function (id) {
         var _this = this;
         var user;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/Detail/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/Detail/" + id;
         this.http.get(url, this.options).subscribe(function (response) {
             var results = response.json();
             if (results != null) {
@@ -8973,7 +8973,7 @@ var UserService = (function () {
     // detail operation(s)
     UserService.prototype.saveUser = function (user) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/Save";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUser/Save";
         this.http.put(url, JSON.stringify(user), this.options).subscribe(function (response) {
             _this.userSavedSource.next(1);
         }, function (error) {
@@ -8984,7 +8984,7 @@ var UserService = (function () {
     UserService.prototype.getDropDowns = function () {
         var _this = this;
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysDropDown/List";
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
             if (results.length > 0) {
@@ -9006,7 +9006,7 @@ var UserService = (function () {
     // detail line1 (user rights) list
     UserService.prototype.getUserRightsPerUser = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUserRight/ListPerUser/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUserRight/ListPerUser/" + id;
         var userRights = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
@@ -9036,7 +9036,7 @@ var UserService = (function () {
     UserService.prototype.saveUserRight = function (userRight) {
         var _this = this;
         if (userRight.id == 0) {
-            var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUserRight/Add";
+            var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUserRight/Add";
             this.http.post(url, JSON.stringify(userRight), this.options).subscribe(function (response) {
                 _this.userRightSavedSource.next(1);
             }, function (error) {
@@ -9044,7 +9044,7 @@ var UserService = (function () {
             });
         }
         else {
-            var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUserRight/Save";
+            var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUserRight/Save";
             this.http.put(url, JSON.stringify(userRight), this.options).subscribe(function (response) {
                 _this.userRightSavedSource.next(1);
             }, function (error) {
@@ -9054,7 +9054,7 @@ var UserService = (function () {
     };
     UserService.prototype.deleteUserRight = function (id) {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/MstUserRight/Delete/" + id;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUserRight/Delete/" + id;
         this.http.delete(url, this.options).subscribe(function (response) {
             _this.userRightDeletedSource.next(1);
         }, function (error) {
@@ -9064,7 +9064,7 @@ var UserService = (function () {
     // detail line1 combo boxes
     UserService.prototype.getPages = function () {
         var _this = this;
-        var url = "http://filbrokerwebsite-priland.azurewebsites.net/api/SysPage/List";
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/SysPage/List";
         var pages = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
         this.http.get(url, this.options).subscribe(function (response) {
             var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
