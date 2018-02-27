@@ -8177,7 +8177,7 @@ var SoldUnitService = (function () {
                 for (var i = 0; i <= results.length - 1; i++) {
                     brokers.push({
                         id: results[i].Id,
-                        fullName: results[i].FullName
+                        fullName: results[i].FullName + "   (" + results[i].RealtyFirm + ")"
                     });
                 }
                 _this.brokersSource.next(brokers);
