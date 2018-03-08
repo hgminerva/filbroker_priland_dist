@@ -6124,7 +6124,7 @@ var ReportsIndex = (function () {
     // events
     // ======
     // report activity
-    ReportsIndex.prototype.btnCSVReportClick = function () {
+    ReportsIndex.prototype.generateCSV = function () {
         var data = "";
         var collection;
         var fileName = "";
@@ -6167,17 +6167,47 @@ var ReportsIndex = (function () {
                 }
                 collection.moveToNextPage();
             }
-            var csvData = new Blob([data], { type: 'text/csv;charset=utf-8;' });
-            var csvURL = window.URL.createObjectURL(csvData);
-            var tempLink = document.createElement('a');
-            tempLink.href = csvURL;
-            tempLink.setAttribute('download', fileName);
-            tempLink.click();
         }
+        return new Blob([data], { type: 'text/csv;charset=utf-8;' });
+    };
+    ReportsIndex.prototype.btnCSVReportClick = function () {
+        var fileName = "";
+        if (this.tabDetail1[0] == true) {
+            fileName = "report-soldUnit.csv";
+        }
+        else if (this.tabDetail1[1] == true) {
+            fileName = "report-soldUnitChecklist.csv";
+        }
+        else if (this.tabDetail1[2] == true) {
+            fileName = "report-soldUnitChecklistActivities.csv";
+        }
+        else if (this.tabDetail1[3] == true) {
+            fileName = "report-commissionRequest.csv";
+        }
+        var csvData = this.generateCSV();
+        var csvURL = window.URL.createObjectURL(csvData);
+        var tempLink = document.createElement('a');
+        tempLink.href = csvURL;
+        tempLink.setAttribute('download', fileName);
+        tempLink.click();
     };
     ReportsIndex.prototype.btnEmailReportClick = function () {
         var _this = this;
-        this.reportsService.sendEmail();
+        var csvData = this.generateCSV();
+        var fileName = "";
+        if (this.tabDetail1[0] == true) {
+            fileName = "report-soldUnit.csv";
+        }
+        else if (this.tabDetail1[1] == true) {
+            fileName = "report-soldUnitChecklist.csv";
+        }
+        else if (this.tabDetail1[2] == true) {
+            fileName = "report-soldUnitChecklistActivities.csv";
+        }
+        else if (this.tabDetail1[3] == true) {
+            fileName = "report-commissionRequest.csv";
+        }
+        this.reportsService.sendEmail(csvData, fileName);
         this.sendEmailSub = this.reportsService.sendEmailObservable.subscribe(function (data) {
             if (data == 1) {
                 _this.toastr.success("Email sent.");
@@ -6467,23 +6497,22 @@ var ReportsService = (function () {
             }
         });
     };
-    ReportsService.prototype.sendEmail = function () {
+    ReportsService.prototype.sendEmail = function (attachment, filename) {
         var _this = this;
-        var recipient = "hgminerva@gmail.com";
-        var subject = "PRILAND REPORTS";
-        var message = "See attachments.";
         var mailgunUrl = "sandbox56506e2182a34cddae6690198eb6627f.mailgun.org";
         var apiKey = "YXBpOmtleS1iYmIxNmY2ZTZmZGU0MGQ2YWJkZTNmOWJiYjAyMTlhZA==";
+        var url = "https://api.mailgun.net/v3/" + mailgunUrl + "/messages";
+        var formData = new FormData();
+        formData.append('to', 'hgminerva@gmail.com');
+        formData.append('from', "hgminerva@innosoft.ph");
+        formData.append('subject', "PRILAND REPORTS");
+        formData.append('text', "See attachments.");
+        formData.append('attachment', attachment, filename);
         var emailHeaders = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({
-            "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Basic " + apiKey
         });
         var emailOptions = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: emailHeaders });
-        var body = "from=hgminerva@innosoft.ph&" +
-            "to=" + recipient + "&" +
-            "subject=" + subject + "&" +
-            "text=" + message;
-        this.http.post("https://api.mailgun.net/v3/" + mailgunUrl + "/messages", body, emailOptions)
+        this.http.post(url, formData, emailOptions)
             .subscribe(function (result) {
             _this.sendEmailSource.next(1);
         }, function (error) {
@@ -8845,7 +8874,7 @@ var SoldUnitService = (function () {
 /***/ "../../../../../src/app/unit/unit.detail.html":
 /***/ (function(module, exports) {
 
-module.exports = "<menu-root></menu-root>\n\n<br>\n<br>\n\n<div class=\"content-wrapper\">\n\n    <div class=\"container-fluid\">\n\n        <!-- crumbs -->\n        <ol class=\"breadcrumb\">\n            <li class=\"breadcrumb-item\">\n                <a routerLink=\"/menu\">Menu</a>\n            </li>\n            <li class=\"breadcrumb-item\">\n                <a routerLink=\"/unit\">Unit List</a>\n            </li>\n            <li class=\"breadcrumb-item active\">{{title}}</li>\n        </ol>\n\n\n        <div class=\"card\">\n\n            <!-- detail operations, e.g., save, lock, unlock, etc. -->\n            <div class=\"card-header\">\n                <table border=\"0\" style=\"width: 100%;\">\n                    <tr>\n                        <td style=\"width: 59%;\">\n                            <h4>{{title}}</h4>\n                        </td>\n                        <td style=\"width: 1%;\"></td>\n                        <td style=\"width: 40%;\" align=\"right\">\n                            <button  id=\"btnLockUnit\"\n                                [disabled]=\"unit.isLocked\" \n                                class=\"btn btn-primary\" \n                                (click)=\"btnLockUnitClick()\">\n                                <i class=\"fa fa-lock fa-fw\"></i> Lock\n                            </button>\n                            <button id=\"btnUnlockUnit\"\n                                [disabled]=\"!unit.isLocked\" \n                                class=\"btn btn-primary\" \n                                (click)=\"btnUnlockUnitClick()\">\n                                <i class=\"fa fa-unlock fa-fw\"></i> Unlock\n                            </button>\n                            <button  id=\"btnSaveUnit\"\n                                [disabled]=\"unit.isLocked\" \n                                class=\"btn btn-primary\" \n                                (click)=\"btnSaveUnitClick()\">\n                                <i class=\"fa fa-save fa-fw\"></i> Save\n                            </button>\n                            <button id=\"btnCloseUnit\"\n                                class=\"btn btn-danger\" \n                                routerLink=\"/unit\">\n                                <i class=\"fa fa-close fa-fw\"></i> Close\n                            </button>\n                        </td>\n                    </tr>\n                </table>\n            </div>\n\n            <!-- detail fields -->\n            <div class=\"card-body\">\n                <div class=\"row\">\n\n                    <div class=\"col-md-6\">\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Unit Code</label>\n                            <div class=\"col-sm-9\">\n                                <input \n                                    [(ngModel)]=\"unit.unitCode\" \n                                    disabled \n                                    type=\"text\" \n                                    class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Block No.</label>\n                            <div class=\"col-sm-9\">\n                                <input \n                                    #txtBlock\n                                    [(ngModel)]=\"unit.block\" \n                                    [disabled]=\"unit.isLocked\" \n                                    (input)=\"txtBlockKeyup()\"\n                                    type=\"text\" \n                                    class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Lot No.</label>\n                            <div class=\"col-sm-9\">\n                                <input \n                                    #txtLot\n                                    [(ngModel)]=\"unit.lot\" \n                                    [disabled]=\"unit.isLocked\" \n                                    (input)=\"txtBlockKeyup()\"\n                                    type=\"text\" \n                                    class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Project</label>\n                            <div class=\"col-sm-9\">\n                                <input \n                                    [(ngModel)]=\"unit.project\" \n                                    disabled\n                                    type=\"text\" \n                                    class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Model</label>\n                            <div class=\"col-sm-9\">\n                                <wj-combo-box #cmbHouseModel\n                                    [itemsSource]=\"cmbHouseModelData\" \n                                    [isDisabled]=\"unit.isLocked\" \n                                    [isEditable]=\"false\" \n                                    [isRequired]=\"true\"\n                                    [displayMemberPath]=\"'houseModel'\" \n                                    [selectedValuePath]=\"'id'\" \n                                    [(ngModel)]=\"unit.houseModelId\">\n                                </wj-combo-box>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"col-md-6\">\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Total Lot Area (sqm)</label>\n                            <div class=\"col-sm-9\">\n                                <wj-input-number \n                                    [(value)]=\"unit.tla\"\n                                    [isDisabled]=\"unit.isLocked\">\n                                </wj-input-number>\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Total Floor Area (sqm)</label>\n                            <div class=\"col-sm-9\">\n                                <wj-input-number \n                                    [(value)]=\"unit.tfa\"\n                                    [isDisabled]=\"unit.isLocked\">\n                                </wj-input-number>\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Price</label>\n                            <div class=\"col-sm-9\">\n                                <wj-input-number \n                                    [(value)]=\"unit.price\"\n                                    format=\"n2\"\n                                    [isDisabled]=\"unit.isLocked\">\n                                </wj-input-number>\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Status</label>\n                            <div class=\"col-sm-9\">\n                                <wj-combo-box \n                                    [itemsSource]=\"cmbUnitStatusData\"\n                                    [isDisabled]=\"unit.isLocked\" \n                                    [isEditable]=\"false\" \n                                    [isRequired]=\"true\"\n                                    [displayMemberPath]=\"'description'\" \n                                    [selectedValuePath]=\"'value'\" \n                                    [(text)]=\"unit.status\">\n                                </wj-combo-box>\n                            </div>\n                        </div>\n                    </div>\n                    \n                </div> \n\n            </div> <!-- <div class=\"card-body\"> -->\n\n        </div> <!-- <div class=\"card\"> -->\n\n    </div> <!-- <div class=\"container-fluid\"> -->\n\n    <app-footer [data]=\"unit\"></app-footer>\n\n</div> <!-- <div class=\"content-wrapper\"> -->"
+module.exports = "<menu-root></menu-root>\n\n<br>\n<br>\n\n<div class=\"content-wrapper\">\n\n    <div class=\"container-fluid\">\n\n        <!-- crumbs -->\n        <ol class=\"breadcrumb\">\n            <li class=\"breadcrumb-item\">\n                <a routerLink=\"/menu\">Menu</a>\n            </li>\n            <li class=\"breadcrumb-item\">\n                <a routerLink=\"/unit\">Unit List</a>\n            </li>\n            <li class=\"breadcrumb-item active\">{{title}}</li>\n        </ol>\n\n\n        <div class=\"card\">\n\n            <!-- detail operations, e.g., save, lock, unlock, etc. -->\n            <div class=\"card-header\">\n                <table border=\"0\" style=\"width: 100%;\">\n                    <tr>\n                        <td style=\"width: 59%;\">\n                            <h4>{{title}}</h4>\n                        </td>\n                        <td style=\"width: 1%;\"></td>\n                        <td style=\"width: 40%;\" align=\"right\">\n                            <button  id=\"btnLockUnit\"\n                                [disabled]=\"unit.isLocked\" \n                                class=\"btn btn-primary\" \n                                (click)=\"btnLockUnitClick()\">\n                                <i class=\"fa fa-lock fa-fw\"></i> Lock\n                            </button>\n                            <button id=\"btnUnlockUnit\"\n                                [disabled]=\"!unit.isLocked\" \n                                class=\"btn btn-primary\" \n                                (click)=\"btnUnlockUnitClick()\">\n                                <i class=\"fa fa-unlock fa-fw\"></i> Unlock\n                            </button>\n                            <button  id=\"btnSaveUnit\"\n                                [disabled]=\"unit.isLocked\" \n                                class=\"btn btn-primary\" \n                                (click)=\"btnSaveUnitClick()\">\n                                <i class=\"fa fa-save fa-fw\"></i> Save\n                            </button>\n                            <button id=\"btnCloseUnit\"\n                                class=\"btn btn-danger\" \n                                routerLink=\"/unit\">\n                                <i class=\"fa fa-close fa-fw\"></i> Close\n                            </button>\n                        </td>\n                    </tr>\n                </table>\n            </div>\n\n            <!-- detail fields -->\n            <div class=\"card-body\">\n                <div class=\"row\">\n\n                    <div class=\"col-md-6\">\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Unit Code</label>\n                            <div class=\"col-sm-9\">\n                                <input \n                                    [(ngModel)]=\"unit.unitCode\" \n                                    disabled \n                                    type=\"text\" \n                                    class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Block No.</label>\n                            <div class=\"col-sm-9\">\n                                <input \n                                    #txtBlock\n                                    [(ngModel)]=\"unit.block\" \n                                    [disabled]=\"unit.isLocked\" \n                                    (input)=\"txtBlockKeyup()\"\n                                    type=\"text\" \n                                    class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Lot No.</label>\n                            <div class=\"col-sm-9\">\n                                <input \n                                    #txtLot\n                                    [(ngModel)]=\"unit.lot\" \n                                    [disabled]=\"unit.isLocked\" \n                                    (input)=\"txtBlockKeyup()\"\n                                    type=\"text\" \n                                    class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Project</label>\n                            <div class=\"col-sm-9\">\n                                <input \n                                    [(ngModel)]=\"unit.project\" \n                                    disabled\n                                    type=\"text\" \n                                    class=\"form-control\">\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Model</label>\n                            <div class=\"col-sm-9\">\n                                <wj-combo-box #cmbHouseModel\n                                    [itemsSource]=\"cmbHouseModelData\" \n                                    [isDisabled]=\"unit.isLocked\" \n                                    [isEditable]=\"false\" \n                                    [isRequired]=\"true\"\n                                    [displayMemberPath]=\"'houseModel'\" \n                                    [selectedValuePath]=\"'id'\" \n                                    [(ngModel)]=\"unit.houseModelId\">\n                                </wj-combo-box>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"col-md-6\">\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Total Lot Area (sqm)</label>\n                            <div class=\"col-sm-9\">\n                                <wj-input-number \n                                    [(value)]=\"unit.tla\"\n                                    [isDisabled]=\"unit.isLocked\">\n                                </wj-input-number>\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Total Floor Area (sqm)</label>\n                            <div class=\"col-sm-9\">\n                                <wj-input-number \n                                    [(value)]=\"unit.tfa\"\n                                    [isDisabled]=\"unit.isLocked\">\n                                </wj-input-number>\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Price</label>\n                            <div class=\"col-sm-9\">\n                                <wj-input-number \n                                    [(value)]=\"unit.price\"\n                                    format=\"n2\"\n                                    [isDisabled]=\"unit.isLocked\">\n                                </wj-input-number>\n                            </div>\n                        </div>\n                        <div class=\"form-group row\">\n                            <label class=\"col-sm-3 col-form-label text-right\">Status</label>\n                            <div class=\"col-sm-9\">\n                                <wj-combo-box \n                                    [itemsSource]=\"cmbUnitStatusData\"\n                                    [isDisabled]=\"unit.isLocked\" \n                                    [isEditable]=\"false\" \n                                    [isRequired]=\"true\"\n                                    [displayMemberPath]=\"'description'\" \n                                    [selectedValuePath]=\"'value'\" \n                                    [(text)]=\"unit.status\">\n                                </wj-combo-box>\n                            </div>\n                        </div>\n                    </div>\n                    \n                </div> \n\n            </div> <!-- <div class=\"card-body\"> -->\n            \n            <div class=\"card-body\">\n                <div class=\"col-md-12\">\n                    <ul class=\"nav nav-pills\" role=\"tablist\" style=\"width:100%\">\n                        <li class=\"nav-item\">\n                            <a [ngClass]=\"{'active': true, 'nav-link': true }\" data-toggle=\"tab\" role=\"tab\">Change Price History</a>\n                        </li>\n                    </ul>\n                </div>\n                <br>\n                <div class=\"col-md-12\">\n                    <div class=\"tab-content\" style=\"width:100%\">\n                        <div [ngClass]=\"{'active': true, 'tab-pane': true }\" role=\"tabpanel\">\n\n                            <wj-flex-grid #fgdUnitPrices [itemsSource]=\"fgdUnitPricesCollection\" [selectionMode]=\"3\">\n                                <wj-flex-grid-filter></wj-flex-grid-filter>\n                                <wj-flex-grid-column [header]=\"'Date'\"  [binding]=\"'priceDate'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                                <wj-flex-grid-column [header]=\"'Price'\" [binding]=\"'price'\"  [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                            </wj-flex-grid>\n                            <div class=\"col-sm-12 btn-group\" style=\"padding: 5px 0px 5px 0px;\">\n                                <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitPricesCollection.moveToFirstPage()\">\n                                    <i class=\"fa fa-fast-backward\"></i> First\n                                </button>\n                                <button type=\"button\" class=\"btn btn-info\"  (click)=\"fgdUnitPricesCollection.moveToPreviousPage()\">\n                                    <i class=\"fa fa-step-backward\"></i> Previous\n                                </button>\n                                <button type=\"button\" class=\"btn btn-info\" disabled style=\"width:100px\">\n                                    {{ fgdUnitPricesCollection.pageIndex + 1 }} / {{ fgdUnitPricesCollection.pageCount }}\n                                </button>\n                                <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitPricesCollection.moveToNextPage()\">\n                                    Next\n                                    <i class=\"fa fa-step-forward\"></i>\n                                </button>\n                                <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitPricesCollection.moveToLastPage()\">\n                                    Last\n                                    <i class=\"fa fa-fast-forward\"></i>\n                                </button>\n                            </div>\n\n                        </div>\n                    </div>\n                </div>\n            </div> <!-- <div class=\"card-body\"> -->\n\n\n        </div> <!-- <div class=\"card\"> -->\n\n    </div> <!-- <div class=\"container-fluid\"> -->\n\n    <app-footer [data]=\"unit\"></app-footer>\n\n</div> <!-- <div class=\"content-wrapper\"> -->"
 
 /***/ }),
 
@@ -8931,6 +8960,8 @@ var UnitDetail = (function () {
     // ng
     UnitDetail.prototype.ngOnInit = function () {
         var _this = this;
+        this.fgdUnitPricesData = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["ObservableArray"]();
+        this.fgdUnitPricesCollection = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["CollectionView"](this.fgdUnitPricesData);
         if (this.securityService.openPage("UNIT DETAIL") == true) {
             this.getUnit();
         }
@@ -8952,6 +8983,8 @@ var UnitDetail = (function () {
             this.cmbHouseModelSub.unsubscribe();
         if (this.cmbUnitStatusSub != null)
             this.cmbUnitStatusSub.unsubscribe();
+        if (this.unitPricesSub != null)
+            this.unitPricesSub.unsubscribe();
     };
     // ===============
     // private methods
@@ -8991,6 +9024,18 @@ var UnitDetail = (function () {
             _this.unit.updatedDateTime = data.updatedDateTime;
             _this.getHouseModelsPerProject(data.houseModelId);
             _this.getUnitStatuses(data.status);
+            _this.getUnitPrices(data.id);
+        });
+    };
+    UnitDetail.prototype.getUnitPrices = function (unitId) {
+        var _this = this;
+        this.unitService.getUnitPricesPerUnitId(unitId);
+        this.unitPricesSub = this.unitService.unitPricesObservable.subscribe(function (data) {
+            console.log(data);
+            _this.fgdUnitPricesData = data;
+            _this.fgdUnitPricesCollection = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["CollectionView"](_this.fgdUnitPricesData);
+            _this.fgdUnitPricesCollection.pageSize = 15;
+            _this.fgdUnitPricesCollection.trackChanges = true;
         });
     };
     // combo boxes
@@ -9119,7 +9164,7 @@ var UnitDetail = (function () {
 /***/ "../../../../../src/app/unit/unit.list.html":
 /***/ (function(module, exports) {
 
-module.exports = "<menu-root></menu-root>\n\n<br>\n<br>\n\n<div class=\"content-wrapper\">\n\n    <div class=\"container-fluid\">\n        \n        <!-- crumbs -->\n        <ol class=\"breadcrumb\">\n            <li class=\"breadcrumb-item\">\n                <a routerLink=\"/menu\">Menu</a>\n            </li>\n            <li class=\"breadcrumb-item active\">{{title}}</li>\n        </ol>\n\n\n        <div class=\"card\">\n\n            <!-- title/add button -->\n            <div class=\"card-header\">\n                <table border=\"0\" style=\"width: 100%;\">\n                    <tr>\n                        <td style=\"width: 59%;\">\n                            <h4>{{title}}</h4>\n                        </td>\n                        <td style=\"width: 1%;\"></td>\n                        <td style=\"width: 40%;\" align=\"right\">\n                            <button id=\"btnCSVReport\" class=\"btn btn-primary\" (click)=\"btnCSVUnitClick()\">\n                                <i class=\"fa fa-file-excel-o fa-fw\"></i> CSV\n                            </button>\n                            <button class=\"btn btn-primary\" (click)=\"btnAddUnitClick()\" id=\"btnAddUnit\">\n                                <i class=\"fa fa-plus fa-fw\"></i> Add\n                            </button>\n                            <button \n                                id=\"btnCloseUnit\"\n                                class=\"btn btn-danger\" \n                                routerLink=\"/menu\">\n                                <i class=\"fa fa-close fa-fw\"></i> Close\n                            </button>\n                        </td>\n                    </tr>\n                </table>\n            </div>\n\n            <!-- filters -->\n            <div class=\"card-header\">\n                <div class=\"form-horizontal\">\n                    <div class=\"input-group\">\n                        <span class=\"input-group-addon\">\n                            Project:\n                        </span>\n                        <wj-combo-box #cmbProjects \n                            [itemsSource]=\"cmbProjectsData\" \n                            [placeholder]=\"'Select Project'\" \n                            [isEditable]=\"false\" \n                            [isRequired]=\"true\"\n                            [displayMemberPath]=\"'project'\" \n                            [selectedValuePath]=\"'id'\" \n                            (selectedIndexChanged)=\"cmbProjectsChange()\">\n                        </wj-combo-box>\n                        <!-- <span class=\"input-group-addon\">\n                            <i class=\"fa fa-search fa-fw\"></i>\n                        </span>\n                        <input type=\"text\" class=\"form-control\" placeholder=\"Filter\" [(ngModel)]=\"filterUnit\" /> -->\n                    </div>\n                </div>\n            </div>\n\n            <!-- unit list grid -->\n            <div class=\"card-body\">\n                <wj-flex-grid #fgdUnits [itemsSource]=\"fgdUnitsCollection\" [selectionMode]=\"3\" [frozenColumns]=\"2\">\n                    <wj-flex-grid-filter></wj-flex-grid-filter>\n                    <wj-flex-grid-column [header]=\"Edit\" [isReadOnly]=\"true\" [isContentHtml]=\"true\" [width]=\"90\">\n                        <ng-template wjFlexGridCellTemplate [cellType]=\"'Cell'\" let-cell=\"cell\">\n                            <button class=\"btn btn-primary btn-sm btn-block\" (click)=\"btnEditUnitClick()\">\n                                <i class=\"fa fa-edit fa-fw\"></i> Edit\n                            </button>\n                        </ng-template>\n                    </wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"Delete\" [isReadOnly]=\"true\" [width]=\"90\">\n                        <ng-template wjFlexGridCellTemplate [cellType]=\"'Cell'\" let-cell=\"cell\">\n                            <button class=\"btn btn-danger btn-sm btn-block\" (click)=\"btnDeleteUnitClick()\">\n                                <i class=\"fa fa-trash fa-fw\"></i> Delete\n                            </button>\n                        </ng-template>\n                    </wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Code'\" [binding]=\"'unitCode'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Block'\" [binding]=\"'block'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Lot'\" [binding]=\"'lot'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'House Model'\" [binding]=\"'houseModel'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Floor Area'\" [binding]=\"'tfa'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Lot Area'\" [binding]=\"'tla'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Price'\" [binding]=\"'price'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'L'\" [binding]=\"'isLocked'\" [isReadOnly]=\"true\" [width]=\"50\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Status'\" [binding]=\"'status'\" [isReadOnly]=\"true\" [width]=\"100\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Customer'\" [binding]=\"'customer'\" [isReadOnly]=\"true\" [width]=\"150\"></wj-flex-grid-column>\n                </wj-flex-grid>\n                <div class=\"col-sm-12 btn-group\" style=\"padding: 5px 0px 5px 0px;\">\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitsCollection.moveToFirstPage()\">\n                        <i class=\"fa fa-fast-backward\"></i> First\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitsCollection.moveToPreviousPage()\">\n                        <i class=\"fa fa-step-backward\"></i> Previous\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" disabled style=\"width:100px\">\n                        {{ fgdUnitsCollection.pageIndex + 1 }} / {{ fgdUnitsCollection.pageCount }}\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitsCollection.moveToNextPage()\">\n                        Next\n                        <i class=\"fa fa-step-forward\"></i>\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitsCollection.moveToLastPage()\">\n                        Last\n                        <i class=\"fa fa-fast-forward\"></i>\n                    </button>\n                </div>\n            </div>\n\n        </div> <!-- <div class=\"card\"> -->\n\n    </div> <!-- <div class=\"container-fluid\"> -->\n\n    <app-footer [data]=\"fgdUnitsCollection\"></app-footer>\n    \n</div> <!-- <div class=\"content-wrapper\"> -->\n\n\n\n\n<!-- delete unit prompt modal -->\n<div id=\"mdlUnitDelete\" \n     class=\"modal fade\" \n     role=\"dialog\"\n     [ngStyle]=\"{'display': mdlUnitDeleteShow ? 'block' : 'none', 'opacity': 1}\">\n    <div class=\"modal-dialog modal-lg\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h4 class=\"modal-title\">Delete Unit</h4>\n            </div>\n            <div class=\"modal-body\">\n                Delete {{fgdUnitsCollection.currentItem != null ? fgdUnitsCollection.currentItem.unitCode : \"\"}}?\n            </div>\n            <div class=\"modal-footer\" align=\"right\">\n                <button id=\"btnOkUnitDeleteModal\" class=\"btn btn-danger\" (click)=\"btnOkUnitDeleteModalClick()\">\n                    <i class=\"fa fa-trash fa-fw\"></i> Ok\n                </button>\n                <button id=\"btnCloseUnitDeleteModal\" class=\"btn btn-primary\" (click)=\"btnCloseUnitDeleteModalClick()\">\n                    <i class=\"fa fa-close fa-fw\"></i> Close\n                </button>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<menu-root></menu-root>\n\n<br>\n<br>\n\n<div class=\"content-wrapper\">\n\n    <div class=\"container-fluid\">\n        \n        <!-- crumbs -->\n        <ol class=\"breadcrumb\">\n            <li class=\"breadcrumb-item\">\n                <a routerLink=\"/menu\">Menu</a>\n            </li>\n            <li class=\"breadcrumb-item active\">{{title}}</li>\n        </ol>\n\n\n        <div class=\"card\">\n\n            <!-- title/add button -->\n            <div class=\"card-header\">\n                <table border=\"0\" style=\"width: 100%;\">\n                    <tr>\n                        <td style=\"width: 59%;\">\n                            <h4>{{title}}</h4>\n                        </td>\n                        <td style=\"width: 1%;\"></td>\n                        <td style=\"width: 40%;\" align=\"right\">\n                            <button id=\"btnChangePriceUnit\" class=\"btn btn-primary\" (click)=\"btnChangePriceUnitClick()\">\n                                <i class=\"fa fa-eraser fa-fw\"></i> Update Prices\n                            </button>\n                            <button id=\"btnCSVUnit\" class=\"btn btn-primary\" (click)=\"btnCSVUnitClick()\">\n                                <i class=\"fa fa-file-excel-o fa-fw\"></i> CSV\n                            </button>\n                            <button class=\"btn btn-primary\" (click)=\"btnAddUnitClick()\" id=\"btnAddUnit\">\n                                <i class=\"fa fa-plus fa-fw\"></i> Add\n                            </button>\n                            <button \n                                id=\"btnCloseUnit\"\n                                class=\"btn btn-danger\" \n                                routerLink=\"/menu\">\n                                <i class=\"fa fa-close fa-fw\"></i> Close\n                            </button>\n                        </td>\n                    </tr>\n                </table>\n            </div>\n\n            <!-- filters -->\n            <div class=\"card-header\">\n                <div class=\"form-horizontal\">\n                    <div class=\"input-group\">\n                        <span class=\"input-group-addon\">\n                            Project:\n                        </span>\n                        <wj-combo-box #cmbProjects \n                            [itemsSource]=\"cmbProjectsData\" \n                            [placeholder]=\"'Select Project'\" \n                            [isEditable]=\"false\" \n                            [isRequired]=\"true\"\n                            [displayMemberPath]=\"'project'\" \n                            [selectedValuePath]=\"'id'\" \n                            (selectedIndexChanged)=\"cmbProjectsChange()\">\n                        </wj-combo-box>\n                        <!-- <span class=\"input-group-addon\">\n                            <i class=\"fa fa-search fa-fw\"></i>\n                        </span>\n                        <input type=\"text\" class=\"form-control\" placeholder=\"Filter\" [(ngModel)]=\"filterUnit\" /> -->\n                    </div>\n                </div>\n            </div>\n\n            <!-- unit list grid -->\n            <div class=\"card-body\">\n                <wj-flex-grid #fgdUnits [itemsSource]=\"fgdUnitsCollection\" [selectionMode]=\"3\" [frozenColumns]=\"2\">\n                    <wj-flex-grid-filter></wj-flex-grid-filter>\n                    <wj-flex-grid-column [header]=\"Edit\" [isReadOnly]=\"true\" [isContentHtml]=\"true\" [width]=\"90\">\n                        <ng-template wjFlexGridCellTemplate [cellType]=\"'Cell'\" let-cell=\"cell\">\n                            <button class=\"btn btn-primary btn-sm btn-block\" (click)=\"btnEditUnitClick()\">\n                                <i class=\"fa fa-edit fa-fw\"></i> Edit\n                            </button>\n                        </ng-template>\n                    </wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"Delete\" [isReadOnly]=\"true\" [width]=\"90\">\n                        <ng-template wjFlexGridCellTemplate [cellType]=\"'Cell'\" let-cell=\"cell\">\n                            <button class=\"btn btn-danger btn-sm btn-block\" (click)=\"btnDeleteUnitClick()\">\n                                <i class=\"fa fa-trash fa-fw\"></i> Delete\n                            </button>\n                        </ng-template>\n                    </wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Code'\" [binding]=\"'unitCode'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Block'\" [binding]=\"'block'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Lot'\" [binding]=\"'lot'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'House Model'\" [binding]=\"'houseModel'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Floor Area'\" [binding]=\"'tfa'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Lot Area'\" [binding]=\"'tla'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Price'\" [binding]=\"'price'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'L'\" [binding]=\"'isLocked'\" [isReadOnly]=\"true\" [width]=\"50\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Status'\" [binding]=\"'status'\" [isReadOnly]=\"true\" [width]=\"100\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Customer'\" [binding]=\"'customer'\" [isReadOnly]=\"true\" [width]=\"150\"></wj-flex-grid-column>\n                </wj-flex-grid>\n                <div class=\"col-sm-12 btn-group\" style=\"padding: 5px 0px 5px 0px;\">\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitsCollection.moveToFirstPage()\">\n                        <i class=\"fa fa-fast-backward\"></i> First\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitsCollection.moveToPreviousPage()\">\n                        <i class=\"fa fa-step-backward\"></i> Previous\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" disabled style=\"width:100px\">\n                        {{ fgdUnitsCollection.pageIndex + 1 }} / {{ fgdUnitsCollection.pageCount }}\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitsCollection.moveToNextPage()\">\n                        Next\n                        <i class=\"fa fa-step-forward\"></i>\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitsCollection.moveToLastPage()\">\n                        Last\n                        <i class=\"fa fa-fast-forward\"></i>\n                    </button>\n                </div>\n            </div>\n\n        </div> <!-- <div class=\"card\"> -->\n\n    </div> <!-- <div class=\"container-fluid\"> -->\n\n    <app-footer [data]=\"fgdUnitsCollection\"></app-footer>\n    \n</div> <!-- <div class=\"content-wrapper\"> -->\n\n\n\n\n<!-- delete unit prompt modal -->\n<div id=\"mdlUnitDelete\" \n     class=\"modal fade\" \n     role=\"dialog\"\n     [ngStyle]=\"{'display': mdlUnitDeleteShow ? 'block' : 'none', 'opacity': 1}\">\n    <div class=\"modal-dialog modal-lg\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h4 class=\"modal-title\">Delete Unit</h4>\n            </div>\n            <div class=\"modal-body\">\n                Delete {{fgdUnitsCollection.currentItem != null ? fgdUnitsCollection.currentItem.unitCode : \"\"}}?\n            </div>\n            <div class=\"modal-footer\" align=\"right\">\n                <button id=\"btnOkUnitDeleteModal\" class=\"btn btn-danger\" (click)=\"btnOkUnitDeleteModalClick()\">\n                    <i class=\"fa fa-trash fa-fw\"></i> Ok\n                </button>\n                <button id=\"btnCloseUnitDeleteModal\" class=\"btn btn-primary\" (click)=\"btnCloseUnitDeleteModalClick()\">\n                    <i class=\"fa fa-close fa-fw\"></i> Close\n                </button>\n            </div>\n        </div>\n    </div>\n</div>\n\n\n\n\n\n<!-- change unit price in bulk -->\n<div id=\"mdlChangeBulkUnitPrice\" \n     class=\"modal fade\" \n     role=\"dialog\"\n     [ngStyle]=\"{'display': mdlChangeBulkUnitPriceShow ? 'block' : 'none', 'opacity': 1}\">\n    <div class=\"modal-dialog modal-lg\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h4 class=\"modal-title\">Change Unit Price</h4>\n            </div>\n            <div class=\"modal-body\">  \n                <label class=\"btn btn-primary\" [hidden]=\"btnUploadCSVFileHide\">\n                    <input type=\"file\" \n                            (change)=\"btnUploadCSVFileClick($event)\" \n                            name=\"btnUploadCSVFile\" \n                            accept=\"csv/*\" \n                            style=\"display:none;\" >\n                    Upload CSV File\n                </label>\n                <wj-flex-grid #fgdUnitPrices [itemsSource]=\"fgdUnitPricesCollection\" [selectionMode]=\"3\">\n                    <wj-flex-grid-filter></wj-flex-grid-filter>\n                    <wj-flex-grid-column [header]=\"'Unit'\"  [binding]=\"'unit'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                    <wj-flex-grid-column [header]=\"'Price'\" [binding]=\"'price'\" [isReadOnly]=\"true\" [width]=\"'*'\"></wj-flex-grid-column>\n                </wj-flex-grid>\n                <div class=\"col-sm-12 btn-group\" style=\"padding: 5px 0px 5px 0px;\">\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitPricesCollection.moveToFirstPage()\">\n                        <i class=\"fa fa-fast-backward\"></i> First\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitPricesCollection.moveToPreviousPage()\">\n                        <i class=\"fa fa-step-backward\"></i> Previous\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" disabled style=\"width:100px\">\n                        {{ fgdUnitPricesCollection.pageIndex + 1 }} / {{ fgdUnitPricesCollection.pageCount }}\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitPricesCollection.moveToNextPage()\">\n                        Next\n                        <i class=\"fa fa-step-forward\"></i>\n                    </button>\n                    <button type=\"button\" class=\"btn btn-info\" (click)=\"fgdUnitPricesCollection.moveToLastPage()\">\n                        Last\n                        <i class=\"fa fa-fast-forward\"></i>\n                    </button>\n                </div>\n            </div>\n            <div class=\"modal-footer\" align=\"right\">\n                <button id=\"btnOkChangeBulkUnitPriceModal\" class=\"btn btn-primary\" (click)=\"btnOkChangeBulkUnitPriceModalClick()\">\n                    <i class=\"fa fa-eraser fa-fw\"></i> Update Prices\n                </button>\n                <button id=\"btnCloseChangeBulkUnitPriceModal\" class=\"btn btn-danger\" (click)=\"btnCloseChangeBulkUnitPriceModalClick()\">\n                    <i class=\"fa fa-close fa-fw\"></i> Close\n                </button>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -9200,6 +9245,8 @@ var UnitList = (function () {
         };
         // modals
         this.mdlUnitDeleteShow = false;
+        this.mdlChangeBulkUnitPriceShow = false;
+        this.btnUploadCSVFileHide = false;
         this.toastr.setRootViewContainerRef(viewContainer);
     }
     // ng
@@ -9207,6 +9254,8 @@ var UnitList = (function () {
         var _this = this;
         this.fgdUnitsData = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["ObservableArray"]();
         this.fgdUnitsCollection = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["CollectionView"](this.fgdUnitsData);
+        this.fgdUnitPricesData = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["ObservableArray"]();
+        this.fgdUnitPricesCollection = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["CollectionView"](this.fgdUnitPricesData);
         if (this.securityService.openPage("UNIT LIST") == true) {
             this.getProjects();
         }
@@ -9222,6 +9271,8 @@ var UnitList = (function () {
             this.projectsSub.unsubscribe();
         if (this.unitDeletedSub != null)
             this.unitDeletedSub.unsubscribe();
+        if (this.unitUpdatePriceSub != null)
+            this.unitUpdatePriceSub.unsubscribe();
     };
     // ==============
     // public methods
@@ -9303,6 +9354,9 @@ var UnitList = (function () {
         tempLink.setAttribute('download', fileName);
         tempLink.click();
     };
+    UnitList.prototype.btnChangePriceUnitClick = function () {
+        this.mdlChangeBulkUnitPriceShow = true;
+    };
     // delete unit modal operations
     UnitList.prototype.btnOkUnitDeleteModalClick = function () {
         var _this = this;
@@ -9329,6 +9383,67 @@ var UnitList = (function () {
     };
     UnitList.prototype.btnCloseUnitDeleteModalClick = function () {
         this.mdlUnitDeleteShow = false;
+    };
+    // change price in bulk
+    UnitList.prototype.btnUploadCSVFileClick = function (e) {
+        var _this = this;
+        var target = e.target;
+        if (target.files.length > 0) {
+            var r = new FileReader();
+            r.readAsText(target.files[0]);
+            r.onload = function (e) {
+                var csv = r.result;
+                var csvLines = csv.split(/\r\n|\n/);
+                var csvData = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["ObservableArray"]();
+                for (var i = 0; i < csvLines.length; i++) {
+                    var data = csvLines[i].split(",");
+                    if (data[0] != "") {
+                        csvData.push({
+                            unit: data[0].replace(/\"/gi, ''),
+                            price: Number(data[1].replace(/\"/gi, ''))
+                        });
+                    }
+                }
+                _this.fgdUnitPricesData = csvData;
+                _this.fgdUnitPricesCollection = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["CollectionView"](_this.fgdUnitPricesData);
+                _this.fgdUnitPricesCollection.pageSize = 15;
+                _this.fgdUnitPricesCollection.trackChanges = true;
+            };
+        }
+        ;
+    };
+    UnitList.prototype.btnOkChangeBulkUnitPriceModalClick = function () {
+        var _this = this;
+        if (this.fgdUnitPricesData.length > 0) {
+            var btnOkChangeBulkUnitPriceModal_1 = document.getElementById("btnOkChangeBulkUnitPriceModal");
+            var btnCloseChangeBulkUnitPriceModal_1 = document.getElementById("btnCloseChangeBulkUnitPriceModal");
+            btnOkChangeBulkUnitPriceModal_1.setAttribute("disabled", "disabled");
+            btnCloseChangeBulkUnitPriceModal_1.setAttribute("disabled", "disabled");
+            this.btnUploadCSVFileHide = true;
+            var counter_1 = 1;
+            for (var i = 0; i < this.fgdUnitPricesData.length; i++) {
+                this.unitService.updateUnitPrices(this.unit.projectId, this.fgdUnitPricesData[i].unit, this.fgdUnitPricesData[i].price);
+                this.unitUpdatePriceSub = this.unitService.unitUpdatePriceObservable.subscribe(function (data) {
+                    if (data == 1) {
+                        _this.toastr.success("Price Update successful.");
+                    }
+                    else if (data == 0) {
+                        _this.toastr.error("Price Update failed.");
+                    }
+                    counter_1++;
+                    if (counter_1 == _this.fgdUnitPricesData.length) {
+                        btnOkChangeBulkUnitPriceModal_1.removeAttribute("disabled");
+                        btnCloseChangeBulkUnitPriceModal_1.removeAttribute("disabled");
+                        _this.btnUploadCSVFileHide = false;
+                    }
+                });
+            }
+        }
+    };
+    UnitList.prototype.btnCloseChangeBulkUnitPriceModalClick = function () {
+        this.mdlChangeBulkUnitPriceShow = false;
+        this.fgdUnitPricesData = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["ObservableArray"]();
+        this.fgdUnitPricesCollection = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["CollectionView"](this.fgdUnitPricesData);
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])("cmbProjects"),
@@ -9555,6 +9670,9 @@ var UnitService = (function () {
         // unit list
         this.unitsSource = new __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__["Subject"]();
         this.unitsObservable = this.unitsSource.asObservable();
+        // change unit prices history
+        this.unitPricesSource = new __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__["Subject"]();
+        this.unitPricesObservable = this.unitPricesSource.asObservable();
         // unit detail
         this.unitSource = new __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__["Subject"]();
         this.unitObservable = this.unitSource.asObservable();
@@ -9568,6 +9686,8 @@ var UnitService = (function () {
         this.unitLockedObservable = this.unitLockedSource.asObservable();
         this.unitUnlockedSource = new __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__["Subject"]();
         this.unitUnlockedObservable = this.unitUnlockedSource.asObservable();
+        this.unitUpdatePriceSource = new __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__["Subject"]();
+        this.unitUpdatePriceObservable = this.unitUpdatePriceSource.asObservable();
         // combo boxes
         this.projectsSource = new __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__["Subject"]();
         this.projectsObservable = this.projectsSource.asObservable();
@@ -9605,6 +9725,95 @@ var UnitService = (function () {
             }
             else {
                 _this.toastr.error("No projects.");
+            }
+        });
+    };
+    UnitService.prototype.getUnitsPerProjectId = function (projectId) {
+        var _this = this;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/ListPerProjectId/" + projectId;
+        var units = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
+        this.http.get(url, this.options).subscribe(function (response) {
+            var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
+            if (results.length > 0) {
+                for (var i = 0; i <= results.length - 1; i++) {
+                    units.push({
+                        id: results[i].Id,
+                        unitCode: results[i].UnitCode,
+                        block: results[i].Block,
+                        lot: results[i].Lot,
+                        projectId: results[i].ProjectId,
+                        project: results[i].Project,
+                        houseModelId: results[i].HouseModelId,
+                        houseModel: results[i].HouseModel,
+                        tla: results[i].TLA,
+                        tfa: results[i].TFA,
+                        price: results[i].Price,
+                        status: results[i].Status,
+                        isLocked: results[i].IsLocked,
+                        createdBy: results[i].CreatedBy,
+                        createdDateTime: results[i].CreatedDateTime,
+                        updatedBy: results[i].UpdatedBy,
+                        updatedDateTime: results[i].UpdatedDateTime,
+                        customer: results[i].Customer
+                    });
+                }
+                _this.unitsSource.next(units);
+            }
+            else {
+                _this.unitsSource.next(units);
+                _this.toastr.error("No units for this project.");
+            }
+        });
+    };
+    UnitService.prototype.getHouseModelsPerProject = function (id) {
+        var _this = this;
+        var houseModels = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/ListPerProjectId/" + id;
+        this.http.get(url, this.options).subscribe(function (response) {
+            var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
+            if (results.length > 0) {
+                for (var i = 0; i <= results.length - 1; i++) {
+                    houseModels.push({
+                        id: results[i].Id,
+                        houseModelCode: results[i].HouseModelCode,
+                        houseModel: results[i].HouseModel,
+                        projectId: results[i].ProjectId,
+                        project: results[i].Project,
+                        tfa: results[i].TFA,
+                        price: results[i].Price,
+                        isLocked: results[i].IsLocked,
+                        createdBy: results[i].CreatedBy,
+                        createdDateTime: results[i].CreatedDateTime,
+                        updatedBy: results[i].UpdatedBy,
+                        updatedDateTime: results[i].UpdatedDateTime,
+                    });
+                }
+                _this.houseModelsSource.next(houseModels);
+            }
+            else {
+                _this.houseModelsSource.next(houseModels);
+                _this.toastr.error("No models for this project.");
+            }
+        });
+    };
+    UnitService.prototype.getUnitPricesPerUnitId = function (unitId) {
+        var _this = this;
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnitPrice/ListPerUnitId/" + unitId;
+        var unitPrices = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
+        this.http.get(url, this.options).subscribe(function (response) {
+            var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
+            if (results.length > 0) {
+                for (var i = 0; i <= results.length - 1; i++) {
+                    unitPrices.push({
+                        priceDate: results[i].PriceDate,
+                        price: results[i].Price,
+                        unitId: results[i].UnitId
+                    });
+                }
+                _this.unitPricesSource.next(unitPrices);
+            }
+            else {
+                _this.unitPricesSource.next(unitPrices);
             }
         });
     };
@@ -9706,75 +9915,21 @@ var UnitService = (function () {
             _this.unitUnlockedSource.next(0);
         });
     };
-    // combo boxes
-    UnitService.prototype.getUnitsPerProjectId = function (projectId) {
+    UnitService.prototype.updateUnitPrices = function (projectId, unitCode, price) {
         var _this = this;
-        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/ListPerProjectId/" + projectId;
-        var units = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        this.http.get(url, this.options).subscribe(function (response) {
-            var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
-            if (results.length > 0) {
-                for (var i = 0; i <= results.length - 1; i++) {
-                    units.push({
-                        id: results[i].Id,
-                        unitCode: results[i].UnitCode,
-                        block: results[i].Block,
-                        lot: results[i].Lot,
-                        projectId: results[i].ProjectId,
-                        project: results[i].Project,
-                        houseModelId: results[i].HouseModelId,
-                        houseModel: results[i].HouseModel,
-                        tla: results[i].TLA,
-                        tfa: results[i].TFA,
-                        price: results[i].Price,
-                        status: results[i].Status,
-                        isLocked: results[i].IsLocked,
-                        createdBy: results[i].CreatedBy,
-                        createdDateTime: results[i].CreatedDateTime,
-                        updatedBy: results[i].UpdatedBy,
-                        updatedDateTime: results[i].UpdatedDateTime,
-                        customer: results[i].Customer
-                    });
-                }
-                _this.unitsSource.next(units);
-            }
-            else {
-                _this.unitsSource.next(units);
-                _this.toastr.error("No units for this project.");
-            }
+        var unitPrice = {
+            projectId: projectId,
+            unitCode: unitCode,
+            price: price
+        };
+        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstUnit/UpdatePrice";
+        this.http.put(url, JSON.stringify(unitPrice), this.options).subscribe(function (response) {
+            _this.unitUpdatePriceSource.next(1);
+        }, function (error) {
+            _this.unitUpdatePriceSource.next(0);
         });
     };
-    UnitService.prototype.getHouseModelsPerProject = function (id) {
-        var _this = this;
-        var houseModels = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
-        var url = "https://filbrokerwebsite-priland.azurewebsites.net/api/MstHouseModel/ListPerProjectId/" + id;
-        this.http.get(url, this.options).subscribe(function (response) {
-            var results = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"](response.json());
-            if (results.length > 0) {
-                for (var i = 0; i <= results.length - 1; i++) {
-                    houseModels.push({
-                        id: results[i].Id,
-                        houseModelCode: results[i].HouseModelCode,
-                        houseModel: results[i].HouseModel,
-                        projectId: results[i].ProjectId,
-                        project: results[i].Project,
-                        tfa: results[i].TFA,
-                        price: results[i].Price,
-                        isLocked: results[i].IsLocked,
-                        createdBy: results[i].CreatedBy,
-                        createdDateTime: results[i].CreatedDateTime,
-                        updatedBy: results[i].UpdatedBy,
-                        updatedDateTime: results[i].UpdatedDateTime,
-                    });
-                }
-                _this.houseModelsSource.next(houseModels);
-            }
-            else {
-                _this.houseModelsSource.next(houseModels);
-                _this.toastr.error("No models for this project.");
-            }
-        });
-    };
+    // drop downs
     UnitService.prototype.getDropDowns = function () {
         var _this = this;
         var dropDowns = new __WEBPACK_IMPORTED_MODULE_4_wijmo_wijmo__["ObservableArray"]();
