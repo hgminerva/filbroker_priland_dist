@@ -4477,7 +4477,7 @@ var FooterIndex = (function () {
     function FooterIndex(footerService) {
         this.footerService = footerService;
         this.company = "Priland";
-        this.version = "Filbroker v1.0.20180310.HGM";
+        this.version = "Filbroker v1.0.20180312.HGM";
         this.support = "Innosoft Solutions +63 917 812 3982 (support@innosoft.ph)";
     }
     FooterIndex.prototype.ngOnInit = function () {
@@ -5232,11 +5232,13 @@ module.exports = "<menu-root></menu-root>\n\n<br>\n<br>\n\n<div class=\"content-
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectDetail; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__project_service__ = __webpack_require__("../../../../../src/app/project/project.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__ = __webpack_require__("../../../../../wijmo/NpmImages/wijmo-commonjs-min/wijmo.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ng2_toastr_ng2_toastr__ = __webpack_require__("../../../../ng2-toastr/ng2-toastr.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ng2_toastr_ng2_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_ng2_toastr_ng2_toastr__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__project_service__ = __webpack_require__("../../../../../src/app/project/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__security_security_service__ = __webpack_require__("../../../../../src/app/security/security.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__ = __webpack_require__("../../../../../wijmo/NpmImages/wijmo-commonjs-min/wijmo.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ng2_toastr_ng2_toastr__ = __webpack_require__("../../../../ng2-toastr/ng2-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ng2_toastr_ng2_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_ng2_toastr_ng2_toastr__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5249,7 +5251,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // angular
 
 
+
 // service(s)
+
 
 // wijmo
 
@@ -5260,12 +5264,14 @@ var ProjectDetail = (function () {
     // angular
     // =======
     // constructor
-    function ProjectDetail(projectService, router, toastr, viewContainer, activatedRoute) {
+    function ProjectDetail(projectService, router, toastr, viewContainer, activatedRoute, location, securityService) {
         this.projectService = projectService;
         this.router = router;
         this.toastr = toastr;
         this.viewContainer = viewContainer;
         this.activatedRoute = activatedRoute;
+        this.location = location;
+        this.securityService = securityService;
         // =================
         // public properties
         // =================
@@ -5304,9 +5310,16 @@ var ProjectDetail = (function () {
     }
     // ng
     ProjectDetail.prototype.ngOnInit = function () {
-        this.fgdHouseModelsData = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["ObservableArray"]();
-        this.fgdHouseModelsCollection = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["CollectionView"](this.fgdHouseModelsData);
-        this.getProject();
+        var _this = this;
+        this.fgdHouseModelsData = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["ObservableArray"]();
+        this.fgdHouseModelsCollection = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["CollectionView"](this.fgdHouseModelsData);
+        if (this.securityService.openPage("PROJECT DETAIL") == true) {
+            this.getProject();
+        }
+        else {
+            this.toastr.error("No rights to open page.");
+            setTimeout(function () { _this.location.back(); }, 1000);
+        }
     };
     ProjectDetail.prototype.ngOnDestroy = function () {
         if (this.projectSub != null)
@@ -5364,7 +5377,7 @@ var ProjectDetail = (function () {
         this.projectService.getHouseModelsPerProject(this.project.id);
         this.houseModelsSub = this.projectService.houseModelsObservable.subscribe(function (data) {
             _this.fgdHouseModelsData = data;
-            _this.fgdHouseModelsCollection = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["CollectionView"](_this.fgdHouseModelsData);
+            _this.fgdHouseModelsCollection = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["CollectionView"](_this.fgdHouseModelsData);
             _this.fgdHouseModelsCollection.pageSize = 15;
             _this.fgdHouseModelsCollection.trackChanges = true;
         });
@@ -5374,7 +5387,7 @@ var ProjectDetail = (function () {
         var _this = this;
         this.projectService.getDropDowns();
         this.projectStatusSub = this.projectService.dropDownsObservable.subscribe(function (data) {
-            var projectStatuses = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["ObservableArray"]();
+            var projectStatuses = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["ObservableArray"]();
             if (data.length > 0) {
                 for (var i = 0; i <= data.length - 1; i++) {
                     if (data[i].category == "PROJECT STATUS") {
@@ -5551,11 +5564,13 @@ var ProjectDetail = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             template: __webpack_require__("../../../../../src/app/project/project.detail.html")
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__project_service__["a" /* ProjectService */],
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__project_service__["a" /* ProjectService */],
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */],
-            __WEBPACK_IMPORTED_MODULE_4_ng2_toastr_ng2_toastr__["ToastsManager"],
+            __WEBPACK_IMPORTED_MODULE_6_ng2_toastr_ng2_toastr__["ToastsManager"],
             __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"],
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]])
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_common__["Location"],
+            __WEBPACK_IMPORTED_MODULE_4__security_security_service__["a" /* SecurityService */]])
     ], ProjectDetail);
     return ProjectDetail;
 }());
@@ -5578,11 +5593,13 @@ module.exports = "<menu-root></menu-root>\n\n<br>\n<br>\n\n<div class=\"content-
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectList; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__project_service__ = __webpack_require__("../../../../../src/app/project/project.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__ = __webpack_require__("../../../../../wijmo/NpmImages/wijmo-commonjs-min/wijmo.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ng2_toastr_ng2_toastr__ = __webpack_require__("../../../../ng2-toastr/ng2-toastr.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ng2_toastr_ng2_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_ng2_toastr_ng2_toastr__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__project_service__ = __webpack_require__("../../../../../src/app/project/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__security_security_service__ = __webpack_require__("../../../../../src/app/security/security.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__ = __webpack_require__("../../../../../wijmo/NpmImages/wijmo-commonjs-min/wijmo.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ng2_toastr_ng2_toastr__ = __webpack_require__("../../../../ng2-toastr/ng2-toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ng2_toastr_ng2_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_ng2_toastr_ng2_toastr__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5595,7 +5612,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // angular
 
 
+
 // service(s)
+
 
 // wijmo
 
@@ -5606,11 +5625,13 @@ var ProjectList = (function () {
     // angular class
     // =============
     // constructor
-    function ProjectList(projectService, toastr, viewContainer, router) {
+    function ProjectList(projectService, toastr, viewContainer, router, location, securityService) {
         this.projectService = projectService;
         this.toastr = toastr;
         this.viewContainer = viewContainer;
         this.router = router;
+        this.location = location;
+        this.securityService = securityService;
         // ==================
         // private properties
         // ==================
@@ -5637,9 +5658,16 @@ var ProjectList = (function () {
     }
     // ng
     ProjectList.prototype.ngOnInit = function () {
-        this.fgdProjectsData = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["ObservableArray"]();
-        this.fgdProjectsCollection = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["CollectionView"](this.fgdProjectsData);
-        this.getProjects();
+        var _this = this;
+        this.fgdProjectsData = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["ObservableArray"]();
+        this.fgdProjectsCollection = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["CollectionView"](this.fgdProjectsData);
+        if (this.securityService.openPage("PROJECT LIST") == true) {
+            this.getProjects();
+        }
+        else {
+            this.toastr.error("No rights to open page.");
+            setTimeout(function () { _this.location.back(); }, 1000);
+        }
     };
     ProjectList.prototype.ngOnDestroy = function () {
         if (this.projectDeletedSub != null)
@@ -5653,12 +5681,12 @@ var ProjectList = (function () {
     // project list
     ProjectList.prototype.getProjects = function () {
         var _this = this;
-        var projects = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["ObservableArray"]();
+        var projects = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["ObservableArray"]();
         this.projectService.getProjects();
         this.projectsSub = this.projectService.projectsObservable.subscribe(function (data) {
             if (data.length > 0) {
                 _this.fgdProjectsData = data;
-                _this.fgdProjectsCollection = new __WEBPACK_IMPORTED_MODULE_3_wijmo_wijmo__["CollectionView"](_this.fgdProjectsData);
+                _this.fgdProjectsCollection = new __WEBPACK_IMPORTED_MODULE_5_wijmo_wijmo__["CollectionView"](_this.fgdProjectsData);
                 _this.fgdProjectsCollection.pageSize = 15;
                 _this.fgdProjectsCollection.trackChanges = true;
             }
@@ -5712,10 +5740,12 @@ var ProjectList = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             template: __webpack_require__("../../../../../src/app/project/project.list.html")
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__project_service__["a" /* ProjectService */],
-            __WEBPACK_IMPORTED_MODULE_4_ng2_toastr_ng2_toastr__["ToastsManager"],
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__project_service__["a" /* ProjectService */],
+            __WEBPACK_IMPORTED_MODULE_6_ng2_toastr_ng2_toastr__["ToastsManager"],
             __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"],
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]])
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_common__["Location"],
+            __WEBPACK_IMPORTED_MODULE_4__security_security_service__["a" /* SecurityService */]])
     ], ProjectList);
     return ProjectList;
 }());
