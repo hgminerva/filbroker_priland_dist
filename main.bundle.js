@@ -361,8 +361,8 @@ var AccountService = (function () {
     }
     AccountService.prototype.login = function (username, password) {
         var _this = this;
-        // let url = 'https://filbrokerwebsite-priland.azurewebsites.net/token';
-        var url = 'http://localhost:10136/token';
+        var url = 'https://filbrokerwebsite-priland.azurewebsites.net/token';
+        // let url = 'http://localhost:10136/token';
         var body = "username=" + username + "&password=" + password + "&grant_type=password";
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/x-www-form-urlencoded' });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
