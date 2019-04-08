@@ -7661,9 +7661,9 @@ var SoldUnitDetail = (function () {
         if (this.soldUnitCoOwnerCustomerSub != null)
             this.soldUnitCoOwnerCustomerSub.unsubscribe();
         if (this.soldUnitCoOwnerSub != null)
-            this.soldUnitCoOwnerCustomerSub.unsubscribe();
+            this.soldUnitCoOwnerSub.unsubscribe();
         if (this.soldUnitSavedSub != null)
-            this.soldUnitCoOwnerCustomerSub.unsubscribe();
+            this.soldUnitSavedSub.unsubscribe();
         if (this.addSoldUnitCoOwnerCustomerSub != null)
             this.addSoldUnitCoOwnerCustomerSub.unsubscribe();
         if (this.updateSoldUnitCoOwnerCustomerSub != null)
